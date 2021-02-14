@@ -19,11 +19,7 @@ export const ContactCard = props => {
 				<div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
 					<div className=" float-right">
 						<Link to="/add">
-							<button
-								className="btn"
-								onClick={() => {
-									actions.getSingleContact(props.id);
-								}}>
+							<button className="btn" onClick={() => props.onEdit()}>
 								<i className="fas fa-pencil-alt mr-3" />
 							</button>
 						</Link>
@@ -65,6 +61,7 @@ export const ContactCard = props => {
 ContactCard.propTypes = {
 	history: PropTypes.object,
 	onDelete: PropTypes.func,
+	onEdit: PropTypes.func,
 	id: PropTypes.number,
 	name: PropTypes.string,
 	address: PropTypes.string,

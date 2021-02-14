@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Context } from "../store/appContext.js";
 
 export const Modal = props => {
-	const [state, setState] = useState({
-		//initialize state here
-	});
+	const { store, actions } = useContext(Context);
+
 	return (
 		<div className="modal" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
 			<div className="modal-dialog" role="document">
@@ -47,8 +47,8 @@ export const Modal = props => {
 							className="btn btn-secondary"
 							data-dismiss="modal"
 							onClick={() => {
-								handleClose;
 								actions.deleteContact(props.id);
+								props.onClose();
 							}}>
 							Do it!
 						</button>
@@ -66,7 +66,7 @@ Modal.propTypes = {
 	history: PropTypes.object,
 	onClose: PropTypes.func,
 	show: PropTypes.bool,
-	id: PropTypes.number
+	id: PropTypes.object
 };
 
 /**

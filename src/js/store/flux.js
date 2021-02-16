@@ -1,11 +1,29 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			contacts: []
+			contacts: [],
+			id: null,
+			editContact: null
 		},
 		actions: {
-			setContact: contact => {
-				setStore({ contact: contact });
+			setId: id => {
+				setStore({ id: id });
+			},
+
+			setEditContact: (id, name, email, phone, address) => {
+				setStore({
+					editContact: {
+						id: id,
+						name: name,
+						email: email,
+						phone: phone,
+						address: address
+					}
+				});
+			},
+
+			setEmptyContact: () => {
+				setStore({ editContact: null });
 			},
 
 			getSingleContact: async id => {
@@ -23,18 +41,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			createContact: async data => {
 				let response = await fetch("https://assets.breatheco.de/apis/fake/contact/", {
 					method: "POST",
-					mode: "cors",
-					redirect: "follow",
 					headers: new Headers({
 						"Content-Type": "application/json"
 					}),
-					body: JSON.stringify({
-						name: data.name,
-						email: data.email,
-						agenda_slug: "Almu_Agenda",
-						address: data.address,
-						phone: data.phone
-					})
+					body: JSON.stringify(data)
 				});
 				response = await response.json();
 				getActions().getAllContacts();
@@ -43,8 +53,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteContact: async id => {
 				let response = await fetch("https://assets.breatheco.de/apis/fake/contact/" + id, {
 					method: "DELETE",
-					mode: "cors",
-					redirect: "follow",
 					headers: new Headers({
 						"Content-Type": "application/json"
 					})
@@ -56,22 +64,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateContact: async (id, field) => {
 				let response = await fetch("https://assets.breatheco.de/apis/fake/contact/" + id, {
 					method: "PUT",
-					mode: "cors",
-					redirect: "follow",
 					headers: new Headers({
 						"Content-Type": "application/json"
 					}),
-					body: JSON.stringify({
-						name: field.name,
-						email: field.email,
-						agenda_slug: "Almu_Agenda",
-						address: field.address,
-						phone: field.phone
-					})
+					body: JSON.stringify(field)
 				});
 				response = await response.json();
 				getActions().getAllContacts();
-				getActions().setContact("");
+				getActions().setEmptyContact();
 			}
 		}
 	};
